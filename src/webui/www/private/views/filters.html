@@ -1,0 +1,126 @@
+<div class="filterWrapper">
+    <span class="filterTitle" onclick="toggleFilterDisplay('status');">
+        <img src="icons/go-down.svg">QBT_TR(Status)QBT_TR[CONTEXT=TransferListFiltersWidget]
+    </span>
+    <ul class="filterList" id="statusFilterList">
+        <li id="all_filter"><a href="#" onclick="setFilter('all');return false;"><img src="icons/filterall.svg" alt="All" />QBT_TR(All (0))QBT_TR[CONTEXT=StatusFilterWidget]</a></li>
+        <li id="downloading_filter"><a href="#" onclick="setFilter('downloading');return false;"><img src="icons/downloading.svg" alt="Downloading" />QBT_TR(Downloading (0))QBT_TR[CONTEXT=StatusFilterWidget]</a></li>
+
+        <li id="completed_filter"><a href="#" onclick="setFilter('completed');return false;"><img src="icons/completed.svg" alt="Completed" />QBT_TR(Completed (0))QBT_TR[CONTEXT=StatusFilterWidget]</a></li>        
+    </ul>
+</div>
+
+
+<script>
+    'use strict';
+
+    if (window.qBittorrent === undefined) {
+        window.qBittorrent = {};
+    }
+
+    window.qBittorrent.Filters = (function() {
+        const exports = function() {
+            return {
+                categoriesFilterContextMenu: categoriesFilterContextMenu,
+                tagsFilterContextMenu: tagsFilterContextMenu,
+                trackersFilterContextMenu: trackersFilterContextMenu
+            };
+        };
+
+        const categoriesFilterContextMenu = new window.qBittorrent.ContextMenu.CategoriesFilterContextMenu({
+            targets: '.categoriesFilterContextMenuTarget',
+            menu: 'categoriesFilterMenu',
+            actions: {
+                createCategory: function(element, ref) {
+                    createCategoryFN();
+                },
+                editCategory: function(element, ref) {
+                    editCategoryFN(element.id);
+                },
+                deleteCategory: function(element, ref) {
+                    removeCategoryFN(element.id);
+                },
+                deleteUnusedCategories: function(element, ref) {
+                    deleteUnusedCategoriesFN();
+                },
+                startTorrentsByCategory: function(element, ref) {
+                    startTorrentsByCategoryFN(element.id);
+                },
+                pauseTorrentsByCategory: function(element, ref) {
+                    pauseTorrentsByCategoryFN(element.id);
+                },
+                deleteTorrentsByCategory: function(element, ref) {
+                    deleteTorrentsByCategoryFN(element.id);
+                }
+            },
+            offsets: {
+                x: -15,
+                y: 2
+            },
+            onShow: function() {
+                this.options.element.firstChild.click();
+            }
+        });
+
+        const tagsFilterContextMenu = new window.qBittorrent.ContextMenu.TagsFilterContextMenu({
+            targets: '.tagsFilterContextMenuTarget',
+            menu: 'tagsFilterMenu',
+            actions: {
+                createTag: function(element, ref) {
+                    createTagFN();
+                },
+                deleteTag: function(element, ref) {
+                    removeTagFN(element.id);
+                },
+                deleteUnusedTags: function(element, ref) {
+                    deleteUnusedTagsFN();
+                },
+                startTorrentsByTag: function(element, ref) {
+                    startTorrentsByTagFN(element.id);
+                },
+                pauseTorrentsByTag: function(element, ref) {
+                    pauseTorrentsByTagFN(element.id);
+                },
+                deleteTorrentsByTag: function(element, ref) {
+                    deleteTorrentsByTagFN(element.id);
+                }
+            },
+            offsets: {
+                x: -15,
+                y: 2
+            },
+            onShow: function() {
+                this.options.element.firstChild.click();
+            }
+        });
+
+        const trackersFilterContextMenu = new window.qBittorrent.ContextMenu.ContextMenu({
+            targets: '.trackersFilterContextMenuTarget',
+            menu: 'trackersFilterMenu',
+            actions: {
+                resumeTorrentsByTracker: function(element, ref) {
+                    resumeTorrentsByTrackerFN(element.id);
+                },
+                pauseTorrentsByTracker: function(element, ref) {
+                    pauseTorrentsByTrackerFN(element.id);
+                },
+                deleteTorrentsByTracker: function(element, ref) {
+                    deleteTorrentsByTrackerFN(element.id);
+                }
+            },
+            offsets: {
+                x: -15,
+                y: 2
+            },
+            onShow: function() {
+                this.options.element.firstChild.click();
+            }
+        });
+
+        if (LocalPreferences.get('filter_status_collapsed') === "true")
+            toggleFilterDisplay('status');
+
+
+        return exports();
+    })();
+</script>
